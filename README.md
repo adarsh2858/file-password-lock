@@ -10,6 +10,6 @@ https://drive.google.com/file/d/1V7AQaUK28SfeVD7xCpF3tXQMoxA-UvBW/view?usp=shari
 ## Setup
 1. Clone the repository on your local machine by `git clone github.com/adarsh2858/file-password-lock`.
 2. Run the command `go mod tidy`
-3. `go run . fileName.png encrypt`
+3. `go run . encrypt /path/to/fileName.png`
 4. Check the file if you are still able to view it.
-5. `go run . fileName.png decrypt`
+5. `go run . decrypt /path/to/fileName.png`
