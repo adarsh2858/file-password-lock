@@ -1,9 +1,9 @@
 package main
 
 import (
-	"os"
 	"bytes"
 	"fmt"
+	"os"
 
 	"github.com/adarsh2858/file-password-lock/filecrypt"
 
@@ -11,12 +11,12 @@ import (
 )
 
 const (
-	commandHelp = "help"
+	commandHelp    = "help"
 	commandEncrypt = "encrypt"
 	commandDecrypt = "decrypt"
 )
 
-func main(){
+func main() {
 	if len(os.Args) < 2 {
 		printHelp()
 		os.Exit(0)
@@ -26,7 +26,7 @@ func main(){
 	handleCommands(os.Args[1])
 }
 
-func printHelp(){
+func printHelp() {
 	fmt.Println("File Lock and Unlock by Password")
 	fmt.Println()
 	fmt.Println("Simple file encryptor for your day to day needs.")
@@ -51,7 +51,7 @@ func handleCommands(function string) {
 	}
 }
 
-func handleEncryption(){
+func handleEncryption() {
 	// accept the file name as string input
 	if len(os.Args) < 3 {
 		fmt.Println("File name is not provided")
@@ -83,7 +83,7 @@ func validateFile(file string) bool {
 	return true
 }
 
-func getPassword() []byte{
+func getPassword() []byte {
 	// using the following to not let the password be visible in terminal
 	// while interacting with this file encryptor app
 	fmt.Print("Enter Password")
@@ -92,7 +92,7 @@ func getPassword() []byte{
 		panic(err)
 	}
 
-	fmt.Print("\nConfirm Password")
+	fmt.Print("\nConfirm Password\n")
 	password2, err := term.ReadPassword(0)
 	if err != nil {
 		panic(err)
@@ -109,15 +109,14 @@ func getPassword() []byte{
 	return password1
 }
 
-func isPasswordValid(password1, password2 []byte) bool{
+func isPasswordValid(password1, password2 []byte) bool {
 	if bytes.Equal(password1, password2) {
 		return true
 	}
 	return false
 }
 
-
-func handleDecryption(file string){
+func handleDecryption() {
 	if len(os.Args) < 3 {
 		fmt.Println("File does not exist. For more info, try go run . help")
 		os.Exit(0)
