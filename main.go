@@ -128,6 +128,7 @@ func handleDecryption() {
 		return
 	}
 
+	fmt.Print("Enter password")
 	password, err := term.ReadPassword(0)
 	if err != nil {
 		panic(err)

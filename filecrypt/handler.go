@@ -2,6 +2,7 @@ package filecrypt
 
 import (
 	"bytes"
+	"encoding/hex"
 	"io"
 	"io/ioutil"
 	"os"
@@ -75,4 +76,45 @@ func Encrypt(srcFile string, password []byte) {
 	}
 }
 
-func Decrypt(encryptedFile string, password []byte) {}
+func Decrypt(encryptedFile string, password []byte) {
+	// write the logic here referring online documentation
+	// and own reasoning
+	ciphertext, err := ioutil.ReadFile(encryptedFile)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	key := password
+	salt := ciphertext[len(ciphertext)-12:]
+	str := hex.EncodeToString(salt)
+	nonce, err := hex.DecodeString(str)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	dk := pbkdf2.Key(key, nonce, numberOfIterations, numberOfBytes, sha1.New)
+
+	block, err := aes.NewCipher(dk)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	aesgcm, err := cipher.NewGCM(block)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	plaintext, err := aesgcm.Open(nil, nonce, ciphertext[:len(ciphertext)-12], nil)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	f, err := os.Create(encryptedFile)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	if _, err := io.Copy(f, bytes.NewReader(plaintext)); err != nil {
+		panic(err.Error())
+	}
+}
